@@ -13,14 +13,18 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity{
     private static final int passwordValue = 8;
     private FirebaseAuth mAuth;
 
-    @BindView(R.id.input_email) EditText emailField;
-    @BindView(R.id.input_password) EditText passwordField;
-    @BindView(R.id.btn_login) Button loginButton;
-    @BindView(R.id.link_signup) TextView signupLink;
+    @BindView(R.id.input_email)
+    EditText emailField;
+    @BindView(R.id.input_password)
+    EditText passwordField;
+    @BindView(R.id.btn_login)
+    Button loginButton;
+    @BindView(R.id.link_signup)
+    TextView signupLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,7 @@ public class LoginActivity extends Activity {
 
         mAuth = FirebaseAuth.getInstance();
         loginButton.setOnClickListener(v -> logIn());
-        signupLink.setOnClickListener(view -> startActivity(new Intent(LoginActivity.this, SignupActivity.class)));
+        signupLink.setOnClickListener(v -> startActivity(new Intent(LoginActivity.this, SignupActivity.class)));
     }
 
     public void logIn() {
@@ -98,4 +102,5 @@ public class LoginActivity extends Activity {
         emailField.requestFocus();
         passwordField.requestFocus();
     }
+
 }
