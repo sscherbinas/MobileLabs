@@ -1,52 +1,97 @@
 package com.example.android.mobilecourse;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-    TextView welcomeText;
-    TextView signoutButton;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout linearLayout;
+    private RobotAdapter adapter;
+    private NetworkChangeReceiver networkChangeReceiver;
 
-    public void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        welcomeText = (TextView) findViewById(R.id.welcome_text);
-        signoutButton = (TextView) findViewById(R.id.btn_signout);
+        initViews();
+        registerNetworkMonitoring();
+        loadRobots();
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Users");
-        ref.addValueEventListener(new ValueEventListener() {
+    }
+
+    private void loadRobots() {
+        swipeRefreshLayout.setRefreshing(true);
+        final ApiService apiService = getApplicationEx().getApiService();
+        final Call<List<Robot>> call = apiService.getRobots();
+
+        call.enqueue(new Callback<List<Robot>>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String name = dataSnapshot.child(user.getUid()).child("name").getValue(String.class);
-                welcomeText.setText(getString(R.string.Welcome) + name);
+            public void onResponse(@NonNull final Call<List<Robot>> call,
+                                   @NonNull final Response<List<Robot>> response) {
+                adapter = new RobotAdapter(response.body());
+                recyclerView.setAdapter(adapter);
+                swipeRefreshLayout.setRefreshing(false);
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println(getString(R.string.database_read_failure) + databaseError.getCode());
+            public void onFailure(@NonNull Call<List<Robot>> call, @NonNull Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(linearLayout, R.string.failure, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
 
-        signoutButton.setOnClickListener(v -> {
-            if(mAuth.getCurrentUser() != null) {
-                mAuth.signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            }
-        });
+    private void initViews() {
+        recyclerView = findViewById(R.id.data_list_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        linearLayout = findViewById(R.id.linearLayout);
+        swipeRefreshLayout = findViewById(R.id.data_list_swipe_refresh);
+        setupSwipeToRefresh();
+    }
+
+    private void setupSwipeToRefresh() {
+        swipeRefreshLayout.setOnRefreshListener(
+                () -> {
+                    loadRobots();
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+        );
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+    }
+
+    private void registerNetworkMonitoring() {
+        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        networkChangeReceiver = new NetworkChangeReceiver(linearLayout);
+        this.registerReceiver(networkChangeReceiver, filter);
+    }
+
+    private ApplicationEx getApplicationEx() {
+        return ((ApplicationEx) getApplication());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (networkChangeReceiver != null) {
+            unregisterReceiver(networkChangeReceiver);
+        }
     }
 }

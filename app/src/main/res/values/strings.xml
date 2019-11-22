@@ -10,7 +10,7 @@
     <string name="login_btn">Login</string>
     <string name="login_password">Password</string>
     <string name="login_email">Email</string>
-    <string name="welcome">Welcome!</string>
+    <string name="welcome">Welcome </string>
     <string name="sign_out">Sign out</string>
     <string name="successful_registration">You are successfully signed up!</string>
     <string name="registration_failure">Registration failed</string>
@@ -27,4 +27,7 @@
     <string name="Welcome">Welcome</string>
     <string name="database_read_failure">Database failure</string>
     <string name="signout_btn">Sign out</string>
+    <string name="no_internet_connection">No Internet connection</string>
+    <string name="failure">Failure</string>
+    <string name="robot_name">Name: </string>
 </resources>
