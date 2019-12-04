@@ -59,11 +59,8 @@ public class ProfileFragment extends Fragment {
         getUserInfo();
 
         usernameSubmitBtn.setOnClickListener(view1 -> onPressUsernameUpdateBtn());
-
         emailSubmitBtn.setOnClickListener(view2 -> onPressEmailUpdateBtn());
-
         pictureBtn.setOnClickListener(view3 -> uploadProfilePicture());
-
         logoutBtn.setOnClickListener(view4 -> onPressLogoutBtn());
     }
 
@@ -123,7 +120,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void placeImage() {
-        mAvatarRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri.toString())
+        mAvatarRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> Picasso.get().load(uri.toString())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(profilePicture));
     }

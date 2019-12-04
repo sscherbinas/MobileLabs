@@ -32,9 +32,6 @@ public class DataListFragment extends Fragment {
     private RobotAdapter adapter;
     private NetworkChangeReceiver receiver;
 
-    public DataListFragment() {
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,7 +77,7 @@ public class DataListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Robot>> call, Throwable t) {
-                Snackbar.make(linearLayout, R.string.failure, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(linearLayout, R.string.fail_to_update, Snackbar.LENGTH_LONG).show();
             }
         });
     }
