@@ -17,10 +17,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".MainActivity"
-            android:label="Robots"
-            android:noHistory="true">
-        </activity>
+        <activity android:name="RobotDetails"
+            android:label="Details"/>
         <activity
             android:name=".LoginActivity"
             android:label="Log In"
@@ -35,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
         <receiver android:name=".NetworkChangeReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"
