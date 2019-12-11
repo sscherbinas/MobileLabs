@@ -10,14 +10,14 @@
     android:paddingBottom="24dp">
 
     <ImageView
-        android:id="@+id/details_image_view"
+        android:id="@+id/robot_details_image_view"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:contentDescription= "@string/robot_name"
         android:layout_gravity="center"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/details_name"
+        android:id="@+id/robot_details_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -26,7 +26,7 @@
     </com.google.android.material.textview.MaterialTextView>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/details_code"
+        android:id="@+id/robot_details_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -34,7 +34,7 @@
     </com.google.android.material.textview.MaterialTextView>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/details_address"
+        android:id="@+id/robot_details_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -42,7 +42,7 @@
     </com.google.android.material.textview.MaterialTextView>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/details_time"
+        android:id="@+id/robot_details_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
@@ -50,7 +50,7 @@
     </com.google.android.material.textview.MaterialTextView>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/details_trajectory"
+        android:id="@+id/robot_details_trajectory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"

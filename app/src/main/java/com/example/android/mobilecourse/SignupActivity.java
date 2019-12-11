@@ -42,10 +42,27 @@ public class SignupActivity extends Activity {
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
 
+        if (getIntent() != null) {
+            checkPushNotification();
+        }
         mAuth = FirebaseAuth.getInstance();
         databaseUsers = FirebaseDatabase.getInstance().getReference("Users");
         signupButton.setOnClickListener(v -> signUp());
         loginLink.setOnClickListener(v -> signIn());
+
+    }
+
+    private void checkPushNotification() {
+        if (getIntent().getExtras() != null) {
+            String robotCode = getIntent().getStringExtra(Constants.EXTRAS_KEY_ROBOT_CODE);
+            String message = getIntent().getStringExtra(Constants.EXTRAS_KEY_MESSAGE);
+            if (robotCode != null && !robotCode.isEmpty()) {
+                Intent detailsIntent = new Intent(this, RobotDetails.class);
+                detailsIntent.putExtra(Constants.EXTRAS_KEY_ROBOT_CODE, robotCode);
+                detailsIntent.putExtra(Constants.EXTRAS_KEY_MESSAGE, message);
+                startActivity(detailsIntent);
+            }
+        }
     }
 
     private void signIn() {
