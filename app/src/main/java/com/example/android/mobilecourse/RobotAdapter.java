@@ -15,9 +15,11 @@ import java.util.List;
 
 public class RobotAdapter extends RecyclerView.Adapter<RobotAdapter.RobotViewHolder> {
     private List<Robot> robotList;
+    private DataListFragment.OnRobotClickListener robotClickListener;
 
-    RobotAdapter(List<Robot> robotList) {
+    RobotAdapter(DataListFragment.OnRobotClickListener clickListener, List<Robot> robotList) {
         this.robotList = robotList;
+        this.robotClickListener = clickListener;
     }
 
     @NonNull
@@ -39,6 +41,8 @@ public class RobotAdapter extends RecyclerView.Adapter<RobotAdapter.RobotViewHol
         holder.address.setText(robotList.get(position).getAddress());
         holder.time.setText(robotList.get(position).getTime());
         holder.trajectory.setText(robotList.get(position).getTrajectory());
+
+        holder.itemView.setOnClickListener(view -> robotClickListener.onClick(robotList.get(position)));
     }
 
     @Override
