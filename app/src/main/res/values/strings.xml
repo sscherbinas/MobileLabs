@@ -7,13 +7,6 @@
     <string name="signup_email">Email</string>
     <string name="signup_name">Name</string>
     <string name="dont_have_an_account_sign_up">Dont have an account? Sign up!</string>
-    <string name="email_new">Email is up to date</string>
-    <string name="enter_email">Enter email</string>
-    <string name="enter_valid_email">Enter a valid email</string>
-    <string name="enter_username">Enter username</string>
-    <string name="enter_valid_phone">Enter valid phone number</string>
-    <string name="error">Error</string>
-    <string name="logout">Log Out</string>
     <string name="login_btn">Login</string>
     <string name="login_password">Password</string>
     <string name="login_email">Email</string>
@@ -35,8 +28,13 @@
     <string name="database_read_failure">Database failure</string>
     <string name="signout_btn">Sign out</string>
     <string name="no_internet_connection">No Internet connection</string>
-    <string name="fail_to_update">Update failure</string>
+    <string name="failure">Update failure</string>
+    <string name="robot_code">Code: </string>
+    <string name="trajectory">Trajectory: </string>
+    <string name="time">Time: </string>
+    <string name="address">Address: </string>
     <string name="robot_name">Name: </string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab2">Tab #2</string>
     <string name="data_list">Data List</string>
     <string name="profile">Profile</string>
@@ -45,5 +43,12 @@
     <string name="enter_new_username">Enter new username</string>
     <string name="profile_picture">Profile picture</string>
     <string name="image_uploaded">Image uploaded!</string>
-    <string name="username_new">Username is up to date</string>
+    <string name="username_updated">Username is updated!</string>
+    <string name="email_updated">Email is updated!</string>
+    <string name="enter_email">Please enter email</string>
+    <string name="enter_valid_email">Please enter a valid email</string>
+    <string name="enter_username">Please enter username</string>
+    <string name="enter_valid_phone">Please enter valid phone number</string>
+    <string name="error">Error</string>
+    <string name="logout">Log Out</string>
 </resources>

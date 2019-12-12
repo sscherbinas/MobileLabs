@@ -59,9 +59,12 @@ public class ProfileFragment extends Fragment {
         getUserInfo();
 
         usernameSubmitBtn.setOnClickListener(view1 -> onPressUsernameUpdateBtn());
-        emailSubmitBtn.setOnClickListener(view2 -> onPressEmailUpdateBtn());
-        pictureBtn.setOnClickListener(view3 -> uploadProfilePicture());
-        logoutBtn.setOnClickListener(view4 -> onPressLogoutBtn());
+
+        emailSubmitBtn.setOnClickListener(view12 -> onPressEmailUpdateBtn());
+
+        pictureBtn.setOnClickListener(view13 -> uploadProfilePicture());
+
+        logoutBtn.setOnClickListener(view14 -> onPressLogoutBtn());
     }
 
     private void onPressLogoutBtn() {
@@ -113,6 +116,22 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void initViews(View root) {
+        auth = FirebaseAuth.getInstance();
+        newUsernameLayout = root.findViewById(R.id.fragment_profile_layout_new_username);
+        newUsernameField = root.findViewById(R.id.fragment_profile_new_username);
+        newEmailLayout = root.findViewById(R.id.fragment_profile_layout_new_email);
+        newEmailField = root.findViewById(R.id.fragment_profile_new_email);
+        username = root.findViewById(R.id.fragment_profile_name);
+        email = root.findViewById(R.id.fragment_profile_email);
+        logoutBtn = root.findViewById(R.id.logout_btn);
+        usernameSubmitBtn = root.findViewById(R.id.name_submit_btn);
+        emailSubmitBtn = root.findViewById(R.id.email_submit_btn);
+        pictureBtn = root.findViewById(R.id.upload_pic);
+        profilePicture = root.findViewById(R.id.profile_picture_image_view);
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+    }
+
     private void uploadProfilePicture() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -120,8 +139,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void placeImage() {
-        mAvatarRef.getDownloadUrl()
-                .addOnSuccessListener(uri -> Picasso.get().load(uri.toString())
+        mAvatarRef.getDownloadUrl().addOnSuccessListener(uri -> Picasso.get().load(uri.toString())
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(profilePicture));
     }
@@ -134,14 +152,14 @@ public class ProfileFragment extends Fragment {
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(getActivity(), getString(R.string.username_new), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.username_updated), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void updateEmail(FirebaseUser user, final String newEmail) {
         user.updateEmail(newEmail).addOnCompleteListener(task -> {
-            Toast.makeText(getActivity(), getString(R.string.email_new), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.email_updated), Toast.LENGTH_SHORT).show();
             email.setText(newEmail);
         });
     }
@@ -166,21 +184,5 @@ public class ProfileFragment extends Fragment {
             newEmailLayout.setError(null);
             return true;
         }
-    }
-
-    private void initViews(View root) {
-        auth = FirebaseAuth.getInstance();
-        newUsernameLayout = root.findViewById(R.id.fragment_profile_layout_new_username);
-        newUsernameField = root.findViewById(R.id.fragment_profile_new_username);
-        newEmailLayout = root.findViewById(R.id.fragment_profile_layout_new_email);
-        newEmailField = root.findViewById(R.id.fragment_profile_new_email);
-        username = root.findViewById(R.id.fragment_profile_name);
-        email = root.findViewById(R.id.fragment_profile_email);
-        logoutBtn = root.findViewById(R.id.logout_btn);
-        profilePicture = root.findViewById(R.id.profile_picture_image_view);
-        pictureBtn = root.findViewById(R.id.upload_pic);
-        usernameSubmitBtn = root.findViewById(R.id.name_submit_btn);
-        emailSubmitBtn = root.findViewById(R.id.email_submit_btn);
-        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 }

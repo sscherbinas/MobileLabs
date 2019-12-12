@@ -32,6 +32,9 @@ public class DataListFragment extends Fragment {
     private RobotAdapter adapter;
     private NetworkChangeReceiver receiver;
 
+    public DataListFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,14 +44,23 @@ public class DataListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initViews(Objects.requireNonNull(getView()));
-        loadRobots();
         registerNetworkMonitoring();
+        loadRobots();
     }
 
     private void registerNetworkMonitoring() {
         IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         receiver = new NetworkChangeReceiver(linearLayout);
         Objects.requireNonNull(getActivity()).registerReceiver(receiver, filter);
+    }
+
+    private void initViews(View root) {
+        recyclerView = root.findViewById(R.id.data_list_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayout = root.findViewById(R.id.linearLayout);
+        swipeRefreshLayout = root.findViewById(R.id.data_list_swipe_refresh);
+        setupSwipeToRefresh();
     }
 
     private void setupSwipeToRefresh() {
@@ -77,9 +89,20 @@ public class DataListFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Robot>> call, Throwable t) {
-                Snackbar.make(linearLayout, R.string.fail_to_update, Snackbar.LENGTH_LONG).show();
+                Snackbar.make(linearLayout, R.string.failure, Snackbar.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void openRobotDetails(Robot item) {
+        Intent robotDetailsIntent = new Intent(getContext(), RobotDetails.class);
+        robotDetailsIntent.putExtra("robot_name", item.getRobotName());
+        robotDetailsIntent.putExtra("robot_code", item.getRobotCode());
+        robotDetailsIntent.putExtra("address", item.getAddress());
+        robotDetailsIntent.putExtra("time", item.getTime());
+        robotDetailsIntent.putExtra("trajectory", item.getTrajectory());
+        robotDetailsIntent.putExtra("image", item.getPhotoUrl());
+        startActivity(robotDetailsIntent);
     }
 
     private ApplicationEx getApplicationEx() {
@@ -96,25 +119,5 @@ public class DataListFragment extends Fragment {
         if (receiver != null) {
             Objects.requireNonNull(getActivity()).unregisterReceiver(receiver);
         }
-    }
-
-    private void initViews(View root) {
-        recyclerView = root.findViewById(R.id.data_list_recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        linearLayout = root.findViewById(R.id.linearLayout);
-        swipeRefreshLayout = root.findViewById(R.id.data_list_swipe_refresh);
-        setupSwipeToRefresh();
-    }
-
-    private void openRobotDetails(Robot item) {
-        Intent robotDetailsIntent = new Intent(getContext(), RobotDetails.class);
-        robotDetailsIntent.putExtra("robot_name", item.getRobotName());
-        robotDetailsIntent.putExtra("robot_code", item.getRobotCode());
-        robotDetailsIntent.putExtra("address", item.getAddress());
-        robotDetailsIntent.putExtra("time", item.getTime());
-        robotDetailsIntent.putExtra("trajectory", item.getTrajectory());
-        robotDetailsIntent.putExtra("image", item.getPhotoUrl());
-        startActivity(robotDetailsIntent);
     }
 }
